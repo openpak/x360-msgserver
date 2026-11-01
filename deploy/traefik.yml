@@ -1,0 +1,14 @@
+# Merge into the primary's shared ~/openpak/deploy/traefik/dynamic.yml. The gateway forwards
+# Live service 2 here.
+http:
+  routers:
+    x360-msgserver-web:
+      entryPoints: [web]
+      rule: PathPrefix(`/msgserver`)
+      priority: 40
+      service: x360-msgserver-http
+  services:
+    x360-msgserver-http:
+      loadBalancer:
+        servers:
+        - url: http://openpak-x360-msgserver:10002
