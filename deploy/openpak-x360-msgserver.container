@@ -11,6 +11,8 @@ Network=openpak.network
 IP=10.89.2.204
 Environment=X360_MSGSERVER_ADDR=:10002
 EnvironmentFile=%h/openpak/deploy/x360-gateway-key.env
+Environment=X360_MSGSERVER_TITLES=/titles.json
+Volume=%h/openpak/deploy/x360-msgserver-titles.json:/titles.json:ro
 ReadOnly=true
 DropCapability=ALL
 NoNewPrivileges=true

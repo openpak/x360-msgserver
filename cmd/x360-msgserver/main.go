@@ -22,7 +22,13 @@ func main() {
 		addr = ":10002"
 	}
 
-	srv := &http.Server{Addr: addr, Handler: wire.Guard(os.Getenv("X360_GATEWAY_KEY"), &msgserver.Handler{Log: log}), ReadHeaderTimeout: 10 * time.Second}
+	titles, err := msgserver.LoadTitles(os.Getenv("X360_MSGSERVER_TITLES"))
+	if err != nil {
+		log.Error("titles", "err", err)
+		os.Exit(1)
+	}
+
+	srv := &http.Server{Addr: addr, Handler: wire.Guard(os.Getenv("X360_GATEWAY_KEY"), &msgserver.Handler{Log: log, Titles: titles}), ReadHeaderTimeout: 10 * time.Second}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 	go func() {
